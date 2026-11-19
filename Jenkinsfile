@@ -10,8 +10,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'git@gitlab.com:mselmii.amal/tp2devops-mern-app.git',
-                    credentialsId: 'gitlab_ssh'
+                    url: 'git@github.com:AmalMselmi/tp2devops-mern-app.git',
+                    credentialsId: 'github_ssh'
             }
         }
         stage('SERVER : build, scan, push') {
