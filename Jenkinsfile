@@ -31,7 +31,7 @@ pipeline {
                     sh '''
                         set -eu
                         docker build -t "$IMAGE_SERVER:$BUILD_NUMBER" server
-                        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy_cache:/root/.cache/ aquasec/trivy:0.76.2 image "$IMAGE_SERVER:$BUILD_NUMBER" > trivy_server.txt
+                        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy_cache:/root/.cache/ aquasec/trivy:0.76.2 image --severity HIGH,CRITICAL --exit-code 1 "$IMAGE_SERVER:$BUILD_NUMBER" > trivy_server.txt
                         cat trivy_server.txt
                         echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
                         docker push "$IMAGE_SERVER:$BUILD_NUMBER"
@@ -56,7 +56,7 @@ pipeline {
                     sh '''
                         set -eu
                         docker build -t "$IMAGE_CLIENT:$BUILD_NUMBER" client
-                        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy_cache:/root/.cache/ aquasec/trivy:0.76.2 image "$IMAGE_CLIENT:$BUILD_NUMBER" > trivy_client.txt
+                        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy_cache:/root/.cache/ aquasec/trivy:0.76.2 image --severity HIGH,CRITICAL --exit-code 1 "$IMAGE_CLIENT:$BUILD_NUMBER" > trivy_client.txt
                         cat trivy_client.txt
                         echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
                         docker push "$IMAGE_CLIENT:$BUILD_NUMBER"
